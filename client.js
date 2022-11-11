@@ -35,7 +35,7 @@ PlayerLocations.prototype.reinitialize = function () {
     this._visibleMarkers = {};
     this._layerGroup = null;
     this._ctrl = null;
-    window.overviewer.off('layeradd', this._onLayerAdd);
+    window.overviewer.map.off('layeradd', this._onLayerAdd);
   }
 
   // add new
@@ -63,7 +63,7 @@ PlayerLocations.prototype.updatePlayerMarkers = function (newList, worldChanged)
   oldKeys.forEach((player) => {
     // world changed, player left, player changed dimensions
     if (worldChanged || !newKeys.includes(player) || newList[player].dimension !== currentDimension) {
-      this._visibleMarkers[player].remove();
+      this._layerGroup.clearLayers();
       delete this._visibleMarkers[player];
     } else
       this._visibleMarkers[player].setLatLng(this.getLatLngForPlayer(newList[player]));
@@ -82,8 +82,18 @@ PlayerLocations.prototype.updatePlayerMarkers = function (newList, worldChanged)
 
       const marker = L.marker(this.getLatLngForPlayer(newList[player]), {
         icon: icon,
-        title: player
+        //title: player,
+	riseOnHover: true
       });
+
+      marker.on('mouseover',function(ev) {
+        marker.openPopup();
+      });
+
+      marker.on('mouseout',function(ev) {
+        marker.closePopup();
+      });
+
       if (this.addPopup)
         marker.bindPopup(player);
 
