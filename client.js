@@ -119,7 +119,7 @@ PlayerLocations.prototype.updatePlayerList = function () {
     //loop all incoming players and add ul-list for worlds, and li-elements for players
     for (const [playerName, playerData] of Object.entries(this._list)) {
         const worldSelector = this.getWorldNameFromDimension(playerData.dimension.split(":")[1]);
-        const ulWorld = this.getOrCreateWorldListElement(worldSelector.replace(' ', '_'), this._playersonlinelist, "ul");
+        const ulWorld = this.getOrCreateWorldListElement(worldSelector.replaceAll(' ', '_'), this._playersonlinelist, "ul");
 
         const playerSelector = "player_" + playerName;
         const liPlayer = this._playersonlinelist.querySelector("#" + playerSelector);
@@ -199,7 +199,7 @@ PlayerLocations.prototype.getOrCreateWorldListElement = function (id, parent, ty
     if (selector === null) {
         const newUL = document.createElement(type);
         newUL.setAttribute("id", id);
-        newUL.setAttribute("data-header", id.replace("_", " "));
+        newUL.setAttribute("data-header", id.replaceAll("_", " "));
         parent.appendChild(newUL);
         return newUL;
     } else {
