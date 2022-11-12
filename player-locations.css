@@ -1,0 +1,24 @@
+#player_list {
+    z-index: 10000;
+    position: absolute;
+    top: 220px;
+    right: 14px;
+    width: 150px;
+}
+
+#player_list ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#player_list ul:before {
+    content: attr(data-header);
+    font-size: 120%;
+    font-weight: bold;
+}
+
+#players_online {
+    position: relative;
+    margin-bottom: 5px;
+    border-bottom: 1px solid black;
+}

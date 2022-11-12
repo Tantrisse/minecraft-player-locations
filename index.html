@@ -11,11 +11,12 @@
 <script type="text/javascript" src="overviewerConfig.js"></script>
 <script type="text/javascript" src="overviewer.js"></script>
 <script type="text/javascript" src="baseMarkers.js"></script>
-<script type="text/javascript" src="client.js"></script>
+<script type="text/javascript" src="client.js" defer></script>
 
 <link rel="stylesheet" href="leaflet.css" />
 <script src="leaflet.js"></script>
 <link rel="stylesheet" href="overviewer.css" type="text/css" />
+<link rel="stylesheet" href="player-locations.css" type="text/css" />
 
 </head>
 
@@ -26,5 +27,9 @@
         Check the JavaScript console for error messages.
     </noscript>
     <div id="mcmap"></div>
+    <div id="player_list" class="leaflet-control-layers leaflet-control-layers-expanded leaflet-control">
+        <div id="players_online">Players online: <span id="playersonlinetot">0</span></div>
+        <div id="playersonlinelist"></div>
+    </div>
 </body>
 </html>

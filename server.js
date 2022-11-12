@@ -18,12 +18,12 @@ const config = {
 
 const emptyData = JSON.stringify({});
 
-var rcon,
-  connections = [],
-  playerData = emptyData,
-  rconErrorCount = 0,
-  wsIdCounter = 1,
-  loopId = -1;
+let rcon,
+    connections = [],
+    playerData = emptyData,
+    rconErrorCount = 0,
+    wsIdCounter = 1,
+    loopId = -1;
 
 async function initializeRcon() {
   console.info(`Initializing RCON connection to ${config.RCON_HOST}:${config.RCON_PORT}`);
@@ -32,7 +32,7 @@ async function initializeRcon() {
     await connectRcon();
   } catch (error) {
     console.error('Failed to initialize RCON connection');
-    if (error.code == 'ECONNREFUSED')
+    if (error.code === 'ECONNREFUSED')
       console.error('RCON port not listening');
     else
       console.error(error);
@@ -110,7 +110,7 @@ function closeWebSocketConnection() {
     connections.splice(index, 1);
   if (config.debug)
     console.info(`WebSocket connection ${this.rconId} closed`);
-};
+}
 
 async function loop() {
   if (connections.length === 0) {
@@ -166,9 +166,9 @@ async function loop() {
 
 // 1.16: Additional 'of' after 'max'
 const playerListRegex = /There are \d+ of a max(?: of)? \d+ players online: ((?:[^\s,]+,?\s?)*)/
-const playerPosRegex = /has the following entity data: \[(-?\d+.?\d*)d, (-?\d+.?\d*)d, (-?\d+.?\d*)d\]/
+const playerPosRegex = /has the following entity data: \[(-?\d+.?\d*)d, (-?\d+.?\d*)d, (-?\d+.?\d*)d]/
 // 1.16: Dimension can be a string like 'minecraft:overworld'
-const playerDimRegex = /has the following entity data: (-?\d+|"[^\s]+")/
+const playerDimRegex = /has the following entity data: (-?\d+|"\S+")/
 const knownDims = ['minecraft:the_nether', 'minecraft:overworld', 'minecraft:the_end'];
 async function updatePlayerData() {
   // list players
