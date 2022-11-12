@@ -119,7 +119,7 @@ PlayerLocations.prototype.updatePlayerList = function () {
     //loop all incoming players and add ul-list for worlds, and li-elements for players
     for (const [playerName, playerData] of Object.entries(this._list)) {
         const worldSelector = this.getWorldNameFromDimension(playerData.dimension.split(":")[1]);
-        const ulWorld = this.getOrCreateWorldListElement(worldSelector, this._playersonlinelist, "ul");
+        const ulWorld = this.getOrCreateWorldListElement(worldSelector.replace(' ', '_'), this._playersonlinelist, "ul");
 
         const playerSelector = "player_" + playerName;
         const liPlayer = this._playersonlinelist.querySelector("#" + playerSelector);
@@ -130,9 +130,6 @@ PlayerLocations.prototype.updatePlayerList = function () {
             newLI.innerText = playerName;
             newLI.setAttribute("style", "user-select: none;");
             newLI.dataset.playername = playerName;
-            newLI.addEventListener('dblclick', function (e) {
-                sessionStorage.setItem("follow", e.target.dataset.playername);
-            });
             newLI.addEventListener('click', (e) => this.centerOnPlayer(e.target.dataset.playername, true));
 
             ulWorld.appendChild(newLI);
@@ -176,15 +173,13 @@ PlayerLocations.prototype.centerOnPlayer = function (playername, zoom = false, d
     }
     const playerWorld = this.getWorldNameFromDimension(player.dimension);
     if (playerWorld !== overviewer.current_world) {
-        if (Object.keys(overviewer.collections.mapTypes).includes(playerWorld)) {
-            overviewer.worldCtrl.select.value = playerWorld;
-            overviewer.worldCtrl.select.dispatchEvent(new Event('change'));
-            zoom = true;
-        } else {
+        if (!Object.keys(overviewer.collections.mapTypes).includes(playerWorld)) {
             //player's new world doesn't exist in overviewer-worlds
-            sessionStorage.removeItem("follow");
             return;
         }
+        overviewer.worldCtrl.select.value = playerWorld;
+        overviewer.worldCtrl.select.dispatchEvent(new Event('change'));
+        zoom = true;
     }
 
     const latlng = overviewer.util.fromWorldToLatLng(
@@ -204,7 +199,7 @@ PlayerLocations.prototype.getOrCreateWorldListElement = function (id, parent, ty
     if (selector === null) {
         const newUL = document.createElement(type);
         newUL.setAttribute("id", id);
-        newUL.setAttribute("data-header", id.replace("_minecraft_", "/").replace("overworld", "world"));
+        newUL.setAttribute("data-header", id.replace("_", " "));
         parent.appendChild(newUL);
         return newUL;
     } else {
