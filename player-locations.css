@@ -1,8 +1,8 @@
 #player_list {
     z-index: 10000;
     position: absolute;
-    top: 220px;
-    right: 14px;
+    bottom: 26px;
+    left: 10px;
     width: 150px;
 }
 
