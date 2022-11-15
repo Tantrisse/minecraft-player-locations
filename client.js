@@ -63,7 +63,7 @@ PlayerLocations.prototype.updatePlayerMarkers = function (newList, worldChanged)
   oldKeys.forEach((player) => {
     // world changed, player left, player changed dimensions
     if (worldChanged || !newKeys.includes(player) || newList[player].dimension !== currentDimension) {
-      this._layerGroup.clearLayers();
+      this._layerGroup.removeLayer(this._visibleMarkers[player])
       delete this._visibleMarkers[player];
     } else
       this._visibleMarkers[player].setLatLng(this.getLatLngForPlayer(newList[player]));
